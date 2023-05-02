@@ -68,10 +68,10 @@ const TokenGenerate = new CronJob('44 07 * * *', function() {
 
 TokenGenerate.start();
 
-
+var EMA_checker
 
 function RunningAlgo() {
-  var EMA_checker = setInterval(() => {
+   EMA_checker = setInterval(() => {
   //  console.log("Hits here")
     // console.log(mom)
     var data = JSON.stringify({
@@ -82,7 +82,7 @@ function RunningAlgo() {
       "todate": moment(Date.now()).add(89, 'minutes').format('YYYY-MM-DD kk:mm')
     });
 
-//     console.log(data, "Data")
+    console.log(data, "Data")
   
     var config = {
       method: 'post',
@@ -128,8 +128,7 @@ function RunningAlgo() {
 
             if(getltpValue < CandleLow) {
 
-             UpdateLogs( getltpValue + " " + CandleLow + " Order Trigger" )
-
+              UpdateLogs( getltpValue + " " + CandleLow + " Order Trigger" )
             }
             
           }, 2000);
@@ -221,13 +220,13 @@ function UpdateLogs(message) {
 
 
 // console.log("Server Running")
-// const endCron = new CronJob('46 15 * * *', function() {
-//   console.log('End Cron JOb Here' , moment(Date.now()).format('YYYY-MM-DD kk:mm'))
+const endCron = new CronJob('30 14 * * *', function() {
+  console.log('End Cron JOb Here' , moment(Date.now()).format('YYYY-MM-DD kk:mm'))
 
-//   TimerJob.stop();
-// });
+  clearInterval(EMA_checker)
+});
 
-// endCron.start(); 
+endCron.start(); 
 
 // console.log((42907.20 - 42891.40) * (2 / (5 + 1)) + 42891.40)  
 
