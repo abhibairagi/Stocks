@@ -82,7 +82,7 @@ function RunningAlgo() {
       "todate": moment(Date.now()).add(89, 'minutes').format('YYYY-MM-DD kk:mm')
     });
 
-    console.log(data, "Data")
+//     console.log(data, "Data")
   
     var config = {
       method: 'post',
@@ -128,7 +128,8 @@ function RunningAlgo() {
 
             if(getltpValue < CandleLow) {
 
-              console.log( getltpValue + " " + CandleLow + " Order Trigger" )
+             UpdateLogs( getltpValue + " " + CandleLow + " Order Trigger" )
+
             }
             
           }, 2000);
