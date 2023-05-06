@@ -1,6 +1,7 @@
 const express = require('express')
 const axios = require('axios')
 const moment = require('moment');
+const momentTimezone = require('moment-timezone')
 var CronJob = require('cron').CronJob;
 const fs = require('fs');
 
@@ -62,9 +63,12 @@ function getToken() {
 }
 
 
-const TokenGenerate = new CronJob('44 07 * * *', function() {
+const TokenGenerate = new CronJob('13 09 * * *', function() {
   getToken();
-});
+}, 
+null,
+true,
+ 'Asia/Kolkata');
 
 TokenGenerate.start();
 
@@ -78,8 +82,8 @@ function RunningAlgo() {
       "exchange": "NFO",
       "symboltoken": "36185",
       "interval": "FIVE_MINUTE",
-      "fromdate": moment(Date.now()).add(85, 'minutes').format('YYYY-MM-DD kk:mm'),
-      "todate": moment(Date.now()).add(89, 'minutes').format('YYYY-MM-DD kk:mm')
+      "fromdate": momentTimezone(Date.now()).tz('Asia/Kolkata').subtract(5, 'minutes').format('YYYY-MM-DD kk:mm'),
+      "todate": momentTimezone(Date.now()).tz('Asia/Kolkata').subtract(1, 'minutes').format('YYYY-MM-DD kk:mm')
     });
 
     console.log(data, "Data")
@@ -111,7 +115,7 @@ function RunningAlgo() {
         CandleClose = tempStorage[4]
 
         // GetEMAValue
-         PreviousEMAValue = 43387.32
+         PreviousEMAValue = 42677.68
 
          EMAValue = Number((CandleClose - PreviousEMAValue) * (2 / (5 + 1)) + PreviousEMAValue).toFixed(2)
         //  console.log(EMAValue, "EMAValue")
@@ -152,7 +156,7 @@ function RunningAlgo() {
         console.log(error);
       });
   
-  }, (5 * 60 * 1000) + 800);
+  }, (5 * 60 * 1000) + 900);
 }
 
 // RunningAlgo();
@@ -197,11 +201,15 @@ function getRealData() {
 
 // Cron Job
 
-const RunAlgo = new CronJob('45 07 * * *', function() {
-    UpdateLogs('Algo Started')
+const RunAlgo = new CronJob('15 09 * * *', function() {
     RunningAlgo()
 
-});
+    UpdateLogs("ALgo Started")
+}, 
+null,
+true,
+ 'Asia/Kolkata'
+);
 
 
 RunAlgo.start();
@@ -220,13 +228,22 @@ function UpdateLogs(message) {
 
 
 // console.log("Server Running")
-const endCron = new CronJob('30 14 * * *', function() {
+const endCron = new CronJob('10 15 * * *', function() {
   console.log('End Cron JOb Here' , moment(Date.now()).format('YYYY-MM-DD kk:mm'))
 
   clearInterval(EMA_checker)
-});
+},
+null,
+true,
+ 'Asia/Kolkata');
 
 endCron.start(); 
+
+
+// const data = momentTimezone(Date.now()).tz('Asia/Kolkata')
+// console.log(momentTimezone(Date.now()).tz('Asia/Kolkata').subtract(5, 'minutes').format('YYYY-MM-DD kk:mm'))
+// console.log(momentTimezone(Date.now()).subtract(1, 'minutes').format('YYYY-MM-DD kk:mm'))
+
 
 // console.log((42907.20 - 42891.40) * (2 / (5 + 1)) + 42891.40)  
 
@@ -242,3 +259,4 @@ endCron.start();
 
 // const acb = Number(( 43417.70- 43433.61 ) * (2 / (5 + 1)) + 43433.61 ).toFixed(2)
 // console.log(acb)
+
