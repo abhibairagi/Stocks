@@ -115,7 +115,7 @@ function RunningAlgo() {
         CandleClose = tempStorage[4]
 
         // GetEMAValue
-         PreviousEMAValue = 42677.68
+         PreviousEMAValue = 43202.66
 
          EMAValue = Number((CandleClose - PreviousEMAValue) * (2 / (5 + 1)) + PreviousEMAValue).toFixed(2)
         //  console.log(EMAValue, "EMAValue")
